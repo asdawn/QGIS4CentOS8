@@ -1,5 +1,5 @@
 # QGIS4CentOS8
-A tutorial on compiling QGIS for CentOS 8
+A tutorial on compiling QGIS latest for CentOS 8
 
 Currently QGIS is not available in the epel-release repository(CentOS 8), so we have to compile one if needed. I tried several times and finally got the correct way.
 
@@ -185,3 +185,8 @@ Yes you have to install them with pip3, however sometimes the name is not quite 
 + GRASS not found
 
 Now grass relies on some python package, that package relies on something can not installed with pip3 or dnf, so I do not install it, and most functions are okay. If necessary, you have to try it yourself.
+
++ Binaries
+
+I'll share my compilations of QGIS and libspatialindex. However you have to install all dependencies, and I'm not sure it can run on your machine.
+ 
