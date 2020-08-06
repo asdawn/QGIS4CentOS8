@@ -1,11 +1,12 @@
 # QGIS4CentOS8
+
 A tutorial on compiling QGIS latest for CentOS 8
 
 Currently QGIS is not available in the epel-release repository(CentOS 8), so we have to compile one if needed. I tried several times and finally got the correct way.
 
 *This is not a minimal instruction, you will install extra packages, however it works. I will comment out unnecessary lines as possible as I can.*
 
-0. CentOS GUI
+## 0. CentOS GUI
 
 Make sure you are using the GUI version. QGIS is a desktop GIS, that means it runs under a desktop environment. Unless you are running QGIS purely as a server side tool, you have to install GUI if the system do not have one. With command `dnf grouplist` and `dnf groupinstall` you can easily add GUI to your system. If you want to use *Remote Desktop*, please
 
@@ -21,7 +22,7 @@ sudo firewall-cmd --reload
 
 However remote GUI is optional unless it is a server without monitor. CentOS is a good OS for servers, so I guess you need it.
 
-1. Install programming languages
+## 1. Install programming languages
 
 ```bash
 #sudo dnf install -y python2 python2-pip nodejs npm 
@@ -31,7 +32,7 @@ sudo dnf install -y java-1.8.0-openjdk-devel java-11-openjdk-devel java-latest-o
 sudo dnf install -y git svn
 ```
 
-2. Install postgres
+## 2. Install postgres
 
 Execute commands line by line, you have to type "y" while installing some package.
 
@@ -47,7 +48,7 @@ sudo dnf install postgis30_12
 #sudo dnf install pgrouting_12
 ```
 
-3. Install dependencies
+## 3. Install dependencies
 
 Dozens of packages. Though QGIS's readme has given a list of packages to install, it is for Debian, not Centos. There are differences.
 
@@ -69,7 +70,7 @@ sudo dnf install ocl-icd ocl-icd-devel opencl-headers opencl-filesystem
 sudo dnf install -y gdal30 gdal30-devel geos38-devel
 ```
 
-4. Compile libspatialindex
+## 4. Compile libspatialindex
 **Suppose your home directory is /home/d**
 
 ```bash
@@ -82,7 +83,7 @@ make
 sudo make install
 ```
 
-5. Compile QGIS
+## 5. Compile QGIS
 **Suppose your home directory is /home/d**
 
 ```bash
@@ -99,7 +100,7 @@ cmake ..
 **Yes, you got errors!** That's common. I solved this problem by edit the CMakeCaches.txt.
 Correct these lines:
 
-```
+```text
 POSTGRES_CONFIG:FILEPATH=/usr/pgsql-12/bin/pg_config
 POSTGRES_LIBRARY:FILEPATH=/usr/pgsql-12/lib/libpq.so
 GDAL_CONFIG:FILEPATH=/usr/gdal30/bin/gdal-config
@@ -120,7 +121,7 @@ Protobuf_LITE_LIBRARY_RELEASE:FILEPATH=/usr/lib64/libprotobuf-lite.so.15
 If things have not changed so much, just copy the values above is okay. Some directories are not quite the same if your home directory is not /home/d, or the packages have new version. The most important thing is, **use the postgresql, gdal, geos versions you installed for the PostgreSQL database and PostGIS you are running.** With the most recent versions, there might be errors while compiling. To find which is the right version (for example gdal-libs), you can run command (*DO NOT TYPE Y*, we just want to make clear the dependencies, not really uninstall a package) `dnf remove gdal-libs`, and postgis is not in the list. Then try `dnf remove gdal30-libs`, postgis will also be removed if we continue, so gdal30 is the right version to use. Its installation directory can be found with command `rpm -ql gdal30-libs`.
 
 
-6. Restart compilation
+## 6. Restart compilation
 
 After correct CMakeCaches.txt, try again:
 
@@ -134,7 +135,7 @@ If your computer have N cores, for example 16 cores, you can replace `make -j4` 
 
 **May be there will be errors, later I will tell my experiences in dealing with the errors. **
 
-7. Correct the libraries
+## 7. Correct the libraries
 
 Some libraries are not correctly linked or added to the system lib dir.  So you can not start it. Here I just copy them to /usr/lib64, you may use ln or modify the environment variables.
 
@@ -145,7 +146,7 @@ sudo cp ~/libspatialindex/bin/*.* /usr/lib64/
 
 Then you can start it, but with some warnings. We have to install some python plugins.
 
-8. Python plugins
+## 8. Python plugins
 
 ```bash
 sudo dnf install -y python3-gdal
@@ -156,7 +157,7 @@ sudo pip3 install  pyows OWSlib jinja2 pygments
 Now we can use QGIS. Enjoy it!
 
 
-**9. Dealing with errors**
+## 9. Dealing with errors
 
 + cmacke errors
 
@@ -186,7 +187,7 @@ Yes you have to install them with pip3, however sometimes the name is not quite 
 
 Now grass relies on some python package, that package relies on something can not installed with pip3 or dnf, so I do not install it, and most functions are okay. If necessary, you have to try it yourself.
 
-+ Binaries
+## 10. Binaries
 
 I'll share my compilations of QGIS and libspatialindex. However you have to install all dependencies, and I'm not sure it can run on your machine.
  
