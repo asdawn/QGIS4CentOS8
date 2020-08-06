@@ -96,6 +96,7 @@ cd qgis-3.14.1
 mkdir build
 cd build
 cmake ..
+```
 
 **Yes, you got errors!** That's common. I solved this problem by edit the CMakeCaches.txt.
 Correct these lines:
